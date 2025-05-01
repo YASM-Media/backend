@@ -1,5 +1,6 @@
 {
   "imports": {
+    "@iuioiua/redis": "jsr:@iuioiua/redis@^1.1.1",
     "@types/pg": "npm:@types/pg@^8.11.14",
     "drizzle-kit": "npm:drizzle-kit@^0.31.0",
     "drizzle-orm": "npm:drizzle-orm@^0.43.1",
@@ -7,7 +8,7 @@
     "pg": "npm:pg@^8.15.6"
   },
   "tasks": {
-    "start": "deno run --allow-net main.ts",
+    "start": "deno run --allow-net --allow-read --allow-env main.ts",
     "db:generate": "deno --env -A --node-modules-dir npm:drizzle-kit generate",
     "db:migrate": "deno --env -A --node-modules-dir npm:drizzle-kit migrate"
   },

@@ -2,6 +2,9 @@
   "version": "4",
   "specifiers": {
     "jsr:@hono/hono@^4.7.8": "4.7.8",
+    "jsr:@iuioiua/redis@^1.1.1": "1.1.1",
+    "jsr:@std/bytes@^1.0.5": "1.0.5",
+    "jsr:@std/collections@^1.0.10": "1.0.11",
     "npm:@types/node@*": "22.12.0",
     "npm:@types/pg@^8.11.14": "8.11.14",
     "npm:drizzle-kit@*": "0.31.0_esbuild@0.25.3",
@@ -12,6 +15,19 @@
   "jsr": {
     "@hono/hono@4.7.8": {
       "integrity": "620b1eaab065196d4ebe02cff31f8d3a78c94f736ce2ca86ee14f5f26fe48ecd"
+    },
+    "@iuioiua/redis@1.1.1": {
+      "integrity": "09b2490429e463af6202f8b86699e2e3d8ff02ca9a6bac41e220b6f790a63125",
+      "dependencies": [
+        "jsr:@std/bytes",
+        "jsr:@std/collections"
+      ]
+    },
+    "@std/bytes@1.0.5": {
+      "integrity": "4465dd739d7963d964c809202ebea6d5c6b8e3829ef25c6a224290fbb8a1021e"
+    },
+    "@std/collections@1.0.11": {
+      "integrity": "2f62cf9587484b1fff364f6c3e1f83478eea53dbb6faed6ffeda92ddb6b172f0"
     }
   },
   "npm": {
@@ -407,6 +423,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@hono/hono@^4.7.8",
+      "jsr:@iuioiua/redis@^1.1.1",
       "npm:@types/pg@^8.11.14",
       "npm:drizzle-kit@0.31",
       "npm:drizzle-orm@~0.43.1",

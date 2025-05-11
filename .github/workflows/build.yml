@@ -16,7 +16,7 @@ on:
 
 jobs:
   build_push_image:
-    name: Building and storing YASM Backend Image
+    name: Building and storing YASM Backend Docker Image
     uses: necro-cloud/automations/.github/workflows/build-docker-image.yml@main
     with:
       dev_version_name: development

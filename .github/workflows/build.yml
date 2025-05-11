@@ -1,0 +1,29 @@
+name: Build and store YASM Backend Image
+
+on:
+  push:
+    branches:
+      - task/**
+      - feature/**
+      - bug/**
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - closed
+
+jobs:
+  build_push_image:
+    name: Building and storing YASM Backend Image
+    uses: necro-cloud/automations/.github/workflows/build-docker-image.yml@main
+    with:
+      dev_version_name: development
+      image_name: backend
+      image_proper_name: YASM Backend
+      build_path: .
+      repository: yasm
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

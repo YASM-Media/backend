@@ -18,3 +18,37 @@ export const authenticationInfo = pgTable("authentication_info", {
 });
 
 export type AuthenticationInfo = typeof authenticationInfo.$inferSelect;
+
+// ------------ USER INFO TABLE ------------ //
+export const userInfo = pgTable("user_info", {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  keycloakId: uuid("keycloak_id").references(() =>
+    authenticationInfo.keycloakId
+  ),
+  createdAt,
+  updatedAt,
+});
+
+export type UserInfo = typeof userInfo.$inferInsert;
+
+// ------------ RELATIONS ------------ //
+
+// Authentication Info <----ONE----> User Info
+export const authenticationInfoUserInfoRelation = relations(
+  authenticationInfo,
+  ({ one }) => ({
+    userInfo: one(userInfo),
+  }),
+);
+
+export const userInfoAuthenticationInfoRelation = relations(
+  userInfo,
+  ({ one }) => ({
+    authenticationInfo: one(authenticationInfo, {
+      fields: [userInfo.keycloakId],
+      references: [authenticationInfo.keycloakId],
+    }),
+  }),
+);

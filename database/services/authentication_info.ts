@@ -1,6 +1,7 @@
 import { database } from "../database.ts";
 import { eq } from "drizzle-orm";
 import { authenticationInfo } from "../tables/schema.ts";
+import type { InsertAuthenticationInfo } from "../tables/schema.ts";
 import type { SQL } from "drizzle-orm";
 
 // Select One Authentication Info with Keycloak ID
@@ -26,3 +27,8 @@ export const selectManyAuthenticationInfo = (condition: SQL | void) =>
         userInfo: true,
       },
     });
+
+// Insert Authentication Info based on a custom data
+export const insertAuthenticationInfo = (
+  authenticationInfoData: InsertAuthenticationInfo,
+) => database.insert(authenticationInfo).values(authenticationInfoData);

@@ -18,6 +18,7 @@ export const authenticationInfo = pgTable("authentication_info", {
 });
 
 export type AuthenticationInfo = typeof authenticationInfo.$inferSelect;
+export type InsertAuthenticationInfo = typeof authenticationInfo.$inferInsert;
 
 // ------------ USER INFO TABLE ------------ //
 export const userInfo = pgTable("user_info", {
@@ -32,6 +33,7 @@ export const userInfo = pgTable("user_info", {
 });
 
 export type UserInfo = typeof userInfo.$inferSelect;
+export type InsertUserInfo = typeof userInfo.$inferInsert;
 
 // ------------ RELATIONS ------------ //
 

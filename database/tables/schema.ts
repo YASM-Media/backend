@@ -31,7 +31,7 @@ export const userInfo = pgTable("user_info", {
   updatedAt,
 });
 
-export type UserInfo = typeof userInfo.$inferInsert;
+export type UserInfo = typeof userInfo.$inferSelect;
 
 // ------------ RELATIONS ------------ //
 

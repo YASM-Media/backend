@@ -2,7 +2,7 @@ import { Context, Hono } from "hono";
 import { jwk } from "hono/jwk";
 import { cors } from "hono/cors";
 import { fetchCacheClient } from "./cache/client.ts";
-import { database } from "./database/database.ts";
+import * as authenticationInfoService from "./database/services/authentication_info.ts";
 
 const app = new Hono();
 
@@ -29,11 +29,7 @@ app.get("/", async (c: Context) => {
   console.log(await cacheClient.sendCommand(["PING"]));
 
   console.log(
-    await database.query.authenticationInfo.findMany({
-      with: {
-        userInfo: true,
-      },
-    }),
+    await authenticationInfoService.selectManyAuthenticationInfo(),
   );
 
   return c.text("Hello Hono!");

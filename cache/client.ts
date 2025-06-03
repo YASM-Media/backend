@@ -22,3 +22,28 @@ export const fetchCacheClient = async (): Promise<RedisClient> => {
 
   return valkeyClient;
 };
+
+// Method to fetch cached data from the Valkey deployment
+// else run the given function to fetch the data and cache it
+export const runCachedQueries = async (
+  key: string,
+  elseCacheFunction: () => Promise<string>,
+  ttl: number = 3600,
+): Promise<string> => {
+  // Fetch value for the given key
+  const cacheClient = await fetchCacheClient();
+  const cachedResult = await cacheClient.sendCommand(["GET", key]);
+
+  // If the value for the key does not exist,
+  // fetch actual data from the function
+  // and cache it in Valkey
+  if (cachedResult == null) {
+    const actualResult = await elseCacheFunction();
+
+    cacheClient.sendCommand(["SETEX", key, ttl, actualResult]);
+    return actualResult;
+  } // Else return cached data
+  else {
+    return cachedResult.toString();
+  }
+};

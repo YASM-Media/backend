@@ -30,7 +30,7 @@ export const userinfo = createMiddleware(async (c, next) => {
   // Either fetch cached user info from Valkey else
   // fetch user info from Keycloak
   const cachedKeycloakUserInfo = await runCachedQueries(
-    `userinfo_middleware_${bearerToken}`,
+    `user_info_middleware_${bearerToken}`,
     async () => {
       const userInfo = await fetchUserInfo(bearerToken!);
       return JSON.stringify(userInfo);
@@ -41,23 +41,27 @@ export const userinfo = createMiddleware(async (c, next) => {
   // Set userinfo data for the current request
   c.set("userinfo", cachedKeycloakUserInfo);
 
-  // Either fetch cached authentication info from Valkey else
-  // fetch authentication info from the database
-  const cachedAuthenticationInfo = await runCachedQueries(
-    `authenticationinfo_middleware_${bearerToken}`,
-    async () => {
-      const keycloakUserInfo = JSON.parse(c.get("userinfo"));
+  if (c.req.path != "/auth") {
+    // Either fetch cached authentication info from Valkey else
+    // fetch authentication info from the database
+    const cachedAuthenticationInfo = await runCachedQueries(
+      `authentication_info_middleware_${bearerToken}`,
+      async () => {
+        const keycloakUserInfo = JSON.parse(c.get("userinfo"));
 
-      const authenticationInfo = await selectOneAuthenticationInfo(
-        keycloakUserInfo["sub"],
-      );
-      return JSON.stringify(authenticationInfo);
-    },
-    60 * 5,
-  );
+        const authenticationInfo = await selectOneAuthenticationInfo(
+          keycloakUserInfo["sub"],
+        );
+        return authenticationInfo == null
+          ? ""
+          : JSON.stringify(authenticationInfo);
+      },
+      60 * 5,
+    );
 
-  // Set AuthenticationInfo data for the current request
-  c.set("authenticationinfo", cachedAuthenticationInfo);
+    // Set AuthenticationInfo data for the current request
+    c.set("authenticationinfo", cachedAuthenticationInfo);
+  }
 
   // Next
   await next();
